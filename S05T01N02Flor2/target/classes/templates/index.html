@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!--im assuming html and xmlns here is the source to download the presentation code -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<!-- head is a type for headers of different sizes, 1,2,3 etc-->
+<head>
+	<meta charset="ISO-8859-1"> 
+	<!--title here is what will show up on the tab of the browser, like the name of the app or so -->
+    <title>Flower Management System</title>
+	<!-- cross origin at end needs to be anonymous? im guessing this pulls in the relevant information online-->
+    <link rel="stylesheet" 
+    	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" 
+    	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" 
+    	crossorigin="anonymous">
+</head>
+<!-- the declared variable is <datatype> the body of the object and ends with </datatype> to close out the code, kind like {} for code blocks -->
+<body>
+	<!-- div means division??? class refers to a presentation type -->
+	 <div align= "center" th:switch="${flower}" class="container my-2">
+		 
+        <!--h1 is a header type -->
+        <h1>Flower List</h1>
+        
+        <!-- a means an action to take place, think its a get method, calling the new form-->
+        <a th:href="@{/showNewFlowerForm}" class="btn btn-primary btn-sm mb-3"> Add Flower </a>
+  		
+  		<form th:href="@{/showFormForOne/{id}}" th:object="${flower}"   method="get">
+  			<input type="text" placeholder="Find flower by id" size="50" >
+  			<button type="submit" class="btn btn-info" >Search</button>
+  			<button type="submit" class="btn btn-info" >Reset</button>
+  		</form>
+		<!-- will present data as a table, border is a type-->
+        <table border="1" class="table table-striped table-responsive-md">
+           <!--t stands for table, so below its thead table header and tr is table row -->
+            <thead>
+				
+                <tr align= "center">
+					<!-- th is table header name, or column names-->
+                    <th>Flower Name</th>
+                    <th>Flower Country</th>
+                    <th>Flower Type</th>
+                    <th> Actions </th>
+                </tr>
+            </thead>
+            <!-- above is table head info, below is the body and what each row will do in tr -->
+            <tbody>
+				
+                <tr th:each="flower : ${getAllFlowers}">
+					<h3 th:case="null">No flowers yet!</h3>
+					<!-- above method calls in each row a function, and below td is table data? -->
+					<!--td type="hidden" th:field="${pk_BranchId}" /-->
+                    <td th:text="${flower.nameFlower}"></td>
+                    <td th:text="${flower.countryFlower}"></td>
+                    <td th:text="${flower.typeFlower}"></td>
+                    <td> <a th:href="@{/showFormForUpdate/{id}(id=${flower.pk_FlowerId})}" class="btn btn-primary">Update</a>
+                        <a th:href="@{/showFormForDelete/{id}(id=${flower.pk_FlowerId})}" class="btn btn-danger">Delete</a>
+                    </td>	
+                </tr>
+            </tbody>
+            
+        </table>
+        <!-- everything before affects the table layout, here this is outside of the table, in case there is no data to show-->
+        
+    </div>
+
+</body>
+</html>
